@@ -8,7 +8,7 @@ function App() {
   const [view, setView] = useState<'upload' | 'dashboard'>('upload')
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/health/')
+    axios.get('/api/health/')
       .then(() => {
         setIsConnected(true)
       })

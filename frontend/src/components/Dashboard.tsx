@@ -82,8 +82,8 @@ const Dashboard = ({ onUploadAnother }: { onUploadAnother: () => void }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const metricsRes = await axios.get('http://localhost:8000/api/metrics/');
-        const txnRes = await axios.get('http://localhost:8000/api/metrics/transactions');
+        const metricsRes = await axios.get('/api/metrics/');
+        const txnRes = await axios.get('/api/metrics/transactions');
         setMetrics(metricsRes.data);
         setTransactions(txnRes.data);
       } catch (err) {
@@ -97,7 +97,7 @@ const Dashboard = ({ onUploadAnother }: { onUploadAnother: () => void }) => {
 
   useEffect(() => {
     if (activeTab === 'Insights' && !insights) {
-      axios.get('http://localhost:8000/api/metrics/insights')
+      axios.get('/api/metrics/insights')
         .then(res => setInsights(res.data.insights))
         .catch(err => console.error('Failed to fetch insights', err));
     }
@@ -223,7 +223,7 @@ const Dashboard = ({ onUploadAnother }: { onUploadAnother: () => void }) => {
   const handleDeleteData = async () => {
     if (window.confirm('Are you sure you want to delete all your financial data? This cannot be undone.')) {
       try {
-        await axios.delete('http://localhost:8000/api/metrics/');
+        await axios.delete('/api/metrics/');
         onUploadAnother();
       } catch (err) {
         console.error('Failed to delete data', err);
@@ -237,7 +237,7 @@ const Dashboard = ({ onUploadAnother }: { onUploadAnother: () => void }) => {
     let ins = insights;
     if (!ins) {
       try {
-        const res = await axios.get('http://localhost:8000/api/metrics/insights');
+        const res = await axios.get('/api/metrics/insights');
         ins = res.data.insights;
         setInsights(ins);
       } catch {
