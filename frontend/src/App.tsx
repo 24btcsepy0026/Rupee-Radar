@@ -3,12 +3,14 @@ import axios from 'axios'
 import FileUpload from './components/FileUpload'
 import Dashboard from './components/Dashboard'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+
 function App() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
   const [view, setView] = useState<'upload' | 'dashboard'>('upload')
 
   useEffect(() => {
-    axios.get('/api/health/')
+    axios.get(`${API_BASE_URL}/health/`)
       .then(() => {
         setIsConnected(true)
       })

@@ -33,6 +33,8 @@ interface Transaction {
   is_recurring: boolean;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+
 const COLORS = ['#8b5cf6', '#d97706', '#22c55e', '#ec4899', '#a855f7', '#3b82f6', '#ef4444', '#14b8a6', '#f59e0b'];
 
 const REPORT_CSS = `
@@ -82,8 +84,8 @@ const Dashboard = ({ onUploadAnother }: { onUploadAnother: () => void }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const metricsRes = await axios.get('/api/metrics/');
-        const txnRes = await axios.get('/api/metrics/transactions');
+        const metricsRes = await axios.get(`${API_BASE_URL}/metrics/`);
+        const txnRes = await axios.get(`${API_BASE_URL}/metrics/transactions`);
         setMetrics(metricsRes.data);
         setTransactions(txnRes.data);
       } catch (err) {
@@ -97,7 +99,7 @@ const Dashboard = ({ onUploadAnother }: { onUploadAnother: () => void }) => {
 
   useEffect(() => {
     if (activeTab === 'Insights' && !insights) {
-      axios.get('/api/metrics/insights')
+      axios.get(`${API_BASE_URL}/metrics/insights`)
         .then(res => setInsights(res.data.insights))
         .catch(err => console.error('Failed to fetch insights', err));
     }
@@ -223,7 +225,7 @@ const Dashboard = ({ onUploadAnother }: { onUploadAnother: () => void }) => {
   const handleDeleteData = async () => {
     if (window.confirm('Are you sure you want to delete all your financial data? This cannot be undone.')) {
       try {
-        await axios.delete('/api/metrics/');
+        await axios.delete(`${API_BASE_URL}/metrics/`);
         onUploadAnother();
       } catch (err) {
         console.error('Failed to delete data', err);
@@ -237,7 +239,7 @@ const Dashboard = ({ onUploadAnother }: { onUploadAnother: () => void }) => {
     let ins = insights;
     if (!ins) {
       try {
-        const res = await axios.get('/api/metrics/insights');
+        const res = await axios.get(`${API_BASE_URL}/metrics/insights`);
         ins = res.data.insights;
         setInsights(ins);
       } catch {
